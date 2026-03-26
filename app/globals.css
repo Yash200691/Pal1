@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-dawn: #FFF5F0;
+  --color-courage: #D4245C;
+  --color-signal: #6B3FC0;
+  --color-sun: #F5A623;
+  --color-rescue: #1EBC8C;
+  --color-warmth: #F07CA0;
+  --color-safety: #E8E4F5;
+  --color-earth: #C8A96E;
+  --color-mountain: #B8B0DC;
+  --color-text: #2D1B4E;
+  
+  --color-navy: #0B1121;
+  --color-blue: #1C3264;
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-devanagari: var(--font-noto-devanagari), serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-dawn);
+    color: var(--color-text);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Animations for Hero Section */
+@keyframes cloudFloat {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes subtleDrift {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+  100% { transform: translateX(0); }
+}
+
+.animate-cloud-float {
+  animation: cloudFloat 60s infinite ease-in-out;
+}
+
+.animate-subtle-drift {
+  animation: subtleDrift 40s infinite ease-in-out;
 }
