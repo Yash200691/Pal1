@@ -24,8 +24,24 @@ export default function LenisProvider({ children }: { children: React.ReactNode 
 
     gsap.ticker.lagSmoothing(0);
 
+    // Global --sy variable for CSS parallax depth layers
+    const root = document.documentElement;
+    let syTicking = false;
+    const updateSy = () => {
+      if (!syTicking) {
+        requestAnimationFrame(() => {
+          root.style.setProperty("--sy", String(window.scrollY));
+          syTicking = false;
+        });
+        syTicking = true;
+      }
+    };
+    window.addEventListener("scroll", updateSy, { passive: true });
+    updateSy();
+
     return () => {
       lenis.destroy();
+      window.removeEventListener("scroll", updateSy);
     };
   }, []);
 

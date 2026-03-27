@@ -1,9 +1,77 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  const lineRef = useRef<SVGLineElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (!footerRef.current) return;
+
+      // ── Top border draws itself ──
+      if (lineRef.current) {
+        const el = lineRef.current;
+        el.style.strokeDasharray = "1440";
+        el.style.strokeDashoffset = "1440";
+
+        gsap.to(el, {
+          strokeDashoffset: 0,
+          duration: 0.9,
+          ease: "power2.inOut",
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: "top 90%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      }
+
+      // ── Content fades up with stagger ──
+      if (contentRef.current) {
+        const children = contentRef.current.children;
+        gsap.fromTo(children,
+          { y: 30, opacity: 0 },
+          {
+            y: 0, opacity: 1,
+            duration: 0.7,
+            ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+            stagger: 0.1,
+            scrollTrigger: {
+              trigger: footerRef.current,
+              start: "top 88%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    }, footerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <footer className="w-full bg-[var(--color-text)] py-12 px-6">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
+    <footer ref={footerRef} className="relative w-full bg-[var(--color-text)] py-12 px-6">
+      {/* Drawn top border line */}
+      <svg className="absolute top-0 left-0 w-full h-[2px] overflow-visible">
+        <line
+          ref={lineRef}
+          x1="0" y1="1" x2="1440" y2="1"
+          stroke="var(--color-signal)"
+          strokeWidth="1"
+          strokeOpacity="0.2"
+          className="line-draw"
+        />
+      </svg>
+
+      <div ref={contentRef} className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
         
         {/* Left: Branding */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2">

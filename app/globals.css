@@ -56,3 +56,72 @@
 .animate-subtle-drift {
   animation: subtleDrift 40s infinite ease-in-out;
 }
+
+/* ═══ GLOBAL SCROLL ENGINE ═══ */
+:root {
+  --sy: 0;
+}
+
+/* Parallax depth layer utility */
+[data-parallax] {
+  will-change: transform;
+}
+
+/* Word cascade: parent hides overflow, each word slides up */
+.word-cascade {
+  overflow: hidden;
+  display: inline-block;
+}
+.word-cascade .word {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.word-cascade.revealed .word {
+  transform: translateY(0);
+}
+
+/* Clip-path wipe heading */
+.clip-wipe {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clip-wipe.revealed {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* SVG line draw */
+.line-draw {
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 3D tilt card base */
+.tilt-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-card > * {
+  transform: translateZ(0);
+}
+
+/* prefers-reduced-motion: disable everything gracefully */
+@media (prefers-reduced-motion: reduce) {
+  .word-cascade .word {
+    transform: translateY(0) !important;
+    transition: none !important;
+  }
+  .clip-wipe {
+    clip-path: inset(0 0% 0 0) !important;
+    transition: none !important;
+  }
+  .line-draw {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  [data-parallax] {
+    transform: none !important;
+  }
+  .tilt-card {
+    transform: none !important;
+  }
+}

@@ -24,16 +24,8 @@ export function easeInOut(t: number) {
 export default function CinematicScroll() {
   const containerRef = useRef<HTMLElement>(null);
   const [p, setP] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    // Force a ScrollTrigger refresh so components below calculate positions correctly
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
-
-
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
@@ -55,9 +47,15 @@ export default function CinematicScroll() {
     window.addEventListener("resize", onScroll, { passive: true });
     onScroll();
 
+    // Refresh ScrollTrigger after this component + all siblings have fully painted
+    const rafId = requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -121,9 +119,7 @@ export default function CinematicScroll() {
   const act5Progress = progress(p, 0.72, 1.0);
   const finalSequenceOpacity = progress(p, 0.75, 0.85);
 
-  if (!mounted) {
-    return <section className="w-full h-[500vh] bg-[var(--color-danger)]" />;
-  }
+
 
   // Dynamic Backgrounds
   // 0 -> 0.36: Danger (#0D0820)

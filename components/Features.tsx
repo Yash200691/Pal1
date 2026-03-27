@@ -41,6 +41,28 @@ const effortColor: Record<EffortLevel, string> = {
   Hard: "bg-[var(--color-courage)] text-white",
 };
 
+// ── 3D tilt on hover ─────────────────────────────────────────
+function attach3DTilt(el: HTMLElement) {
+  const onMove = (e: MouseEvent) => {
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    gsap.to(el, {
+      rotateY: x * 20, rotateX: -y * 20, translateZ: 8,
+      duration: 0.35, ease: "power2.out",
+    });
+  };
+  const onLeave = () => {
+    gsap.to(el, { rotateY: 0, rotateX: 0, translateZ: 0, duration: 0.6, ease: "power3.out" });
+  };
+  el.addEventListener("mousemove", onMove);
+  el.addEventListener("mouseleave", onLeave);
+  return () => {
+    el.removeEventListener("mousemove", onMove);
+    el.removeEventListener("mouseleave", onLeave);
+  };
+}
+
 export default function Features() {
   const [activeTab, setActiveTab] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
@@ -52,15 +74,42 @@ export default function Features() {
     const ctx = gsap.context(() => {
       if (!sectionRef.current) return;
 
-      gsap.fromTo(headingRef.current,
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: headingRef.current, start: "top 82%", toggleActions: "play none none reverse" } }
-      );
+      // ── Heading: clip-path wipe ──
+      if (headingRef.current) {
+        const h2 = headingRef.current.querySelector("h2");
+        if (h2) {
+          gsap.fromTo(h2,
+            { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+            {
+              clipPath: "inset(0 0% 0 0)", opacity: 1,
+              duration: 0.7, ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+              scrollTrigger: { trigger: headingRef.current, start: "top 82%", toggleActions: "play none none reverse" },
+            }
+          );
+        }
+        const p = headingRef.current.querySelector("p");
+        if (p) {
+          gsap.fromTo(p,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.6, ease: "expo.out", delay: 0.1,
+              scrollTrigger: { trigger: headingRef.current, start: "top 82%", toggleActions: "play none none reverse" } }
+          );
+        }
+      }
 
-      gsap.fromTo(tabsRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: tabsRef.current, start: "top 85%", toggleActions: "play none none reverse" }, delay: 0.2 }
-      );
+      // ── Tabs: staggered entry ──
+      if (tabsRef.current) {
+        const btns = tabsRef.current.querySelectorAll("button");
+        gsap.fromTo(btns,
+          { y: 20, opacity: 0, scale: 0.9 },
+          {
+            y: 0, opacity: 1, scale: 1,
+            duration: 0.6, ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+            stagger: 0.06,
+            scrollTrigger: { trigger: tabsRef.current, start: "top 85%", toggleActions: "play none none reverse" },
+          }
+        );
+      }
 
       // Floating ambient orbs
       gsap.to(".feat-orb", {
@@ -76,14 +125,28 @@ export default function Features() {
     return () => ctx.revert();
   }, []);
 
-  // Animate cards when tab changes
+  // ── Animate cards when tab changes: center-rise + 3D tilt ──
   useEffect(() => {
     if (!panelRef.current) return;
     const cards = panelRef.current.querySelectorAll(".feat-card");
+    const cleanups: (() => void)[] = [];
+
     gsap.fromTo(cards,
-      { y: 36, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.65, ease: "expo.out", stagger: 0.1 }
+      { y: 70, opacity: 0, scale: 0.88, rotateX: -8 },
+      {
+        y: 0, opacity: 1, scale: 1, rotateX: 0,
+        duration: 0.7,
+        ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+        stagger: 0.08,
+      }
     );
+
+    // Attach 3D tilt to each card
+    cards.forEach((card) => {
+      cleanups.push(attach3DTilt(card as HTMLElement));
+    });
+
+    return () => cleanups.forEach(fn => fn());
   }, [activeTab]);
 
   return (
@@ -92,9 +155,23 @@ export default function Features() {
       id="features"
       className="relative w-full bg-[#1A0A30] py-28 md:py-40 px-6 overflow-hidden"
     >
-      {/* Ambient background orbs */}
-      <div className="feat-orb absolute top-[10%] left-[5%] w-[320px] h-[320px] bg-[var(--color-signal)] rounded-full blur-[160px] opacity-[0.10] pointer-events-none" />
-      <div className="feat-orb absolute bottom-[15%] right-[10%] w-[400px] h-[400px] bg-[var(--color-courage)] rounded-full blur-[200px] opacity-[0.08] pointer-events-none" />
+      {/* Ambient background orbs — scroll-bound */}
+      <div
+        className="feat-orb absolute top-[10%] left-[5%] w-[320px] h-[320px] bg-[var(--color-signal)] rounded-full blur-[160px] opacity-[0.10] pointer-events-none"
+        data-parallax="-0.04"
+        style={{ transform: `translateY(calc(var(--sy) * -0.04px))` }}
+      />
+      <div
+        className="feat-orb absolute bottom-[15%] right-[10%] w-[400px] h-[400px] bg-[var(--color-courage)] rounded-full blur-[200px] opacity-[0.08] pointer-events-none"
+        data-parallax="-0.07"
+        style={{ transform: `translateY(calc(var(--sy) * -0.07px))` }}
+      />
+      {/* Ghost ring on deeper plane */}
+      <div
+        className="absolute top-[40%] left-[50%] -translate-x-1/2 w-[500px] h-[500px] rounded-full border border-white/[0.03] pointer-events-none"
+        data-parallax="-0.10"
+        style={{ transform: `translateY(calc(var(--sy) * -0.10px))` }}
+      />
 
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center">
 
@@ -128,20 +205,22 @@ export default function Features() {
         <div
           ref={panelRef}
           className="w-full grid grid-cols-1 md:grid-cols-3 gap-6"
-          style={{ minHeight: 260 }}
+          style={{ minHeight: 260, perspective: "800px" }}
         >
           {featuresData[tabs[activeTab]].map((feature, i) => (
             <div
               key={`${activeTab}-${i}`}
-              className="feat-card bg-white/[0.05] border border-white/[0.09] rounded-[20px] p-7 flex flex-col gap-4 hover:bg-white/[0.09] hover:border-white/20 transition-colors duration-300"
+              className="feat-card tilt-card bg-white/[0.05] border border-white/[0.09] rounded-[20px] p-7 flex flex-col gap-4 hover:bg-white/[0.09] hover:border-white/20 transition-colors duration-300"
             >
-              <div className="flex items-start justify-between gap-4">
-                <h4 className="font-sans font-bold text-[16px] text-white leading-snug">{feature.name}</h4>
-                <span className={`shrink-0 font-sans text-[11px] font-bold px-3 py-1 rounded-full ${effortColor[feature.effort]}`}>
-                  {feature.effort}
-                </span>
+              <div className="card-inner flex flex-col gap-4">
+                <div className="flex items-start justify-between gap-4">
+                  <h4 className="font-sans font-bold text-[16px] text-white leading-snug">{feature.name}</h4>
+                  <span className={`shrink-0 font-sans text-[11px] font-bold px-3 py-1 rounded-full ${effortColor[feature.effort]}`}>
+                    {feature.effort}
+                  </span>
+                </div>
+                <p className="font-sans text-[13px] text-white/50 leading-relaxed">{feature.desc}</p>
               </div>
-              <p className="font-sans text-[13px] text-white/50 leading-relaxed">{feature.desc}</p>
             </div>
           ))}
           {/* Fill empty slots for visual balance */}
