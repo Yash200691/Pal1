@@ -78,12 +78,12 @@ export default function ForNGOs() {
     <section
       ref={sectionRef}
       id="for-ngos"
-      className="relative w-full bg-[var(--color-blue)] py-28 md:py-36 px-6 overflow-hidden"
+      className="relative w-full bg-[#E8E4F5] py-28 md:py-36 px-6 overflow-hidden"
     >
       {/* Decorative curved divider at top */}
       <div className="absolute top-0 left-0 right-0 overflow-hidden h-[60px] pointer-events-none">
         <svg className="absolute top-0 w-full" height="60" preserveAspectRatio="none" viewBox="0 0 1440 60">
-          <path d="M0,0 L1440,0 L1440,30 Q720,80 0,30 Z" fill="#0B1121" />
+          <path d="M0,0 L1440,0 L1440,30 Q720,80 0,30 Z" fill="#1A0A30" />
         </svg>
       </div>
 
@@ -91,8 +91,8 @@ export default function ForNGOs() {
 
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-20">
-          <p className="font-sans text-[13px] font-semibold text-[var(--color-rescue)] tracking-[0.12em] uppercase mb-4">For Organisations</p>
-          <h2 className="font-serif text-[36px] md:text-[48px] text-white/90 leading-tight max-w-[600px] mx-auto">
+          <p className="font-sans text-[13px] font-semibold text-[var(--color-signal)] tracking-[0.12em] uppercase mb-4">For Organisations</p>
+          <h2 className="font-serif text-[36px] md:text-[48px] text-[var(--color-plum)] leading-tight max-w-[600px] mx-auto">
             Built for the organisations who show up.
           </h2>
         </div>
@@ -103,12 +103,13 @@ export default function ForNGOs() {
             <div
               key={i}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="bg-white/5 border border-white/10 rounded-[24px] p-10 flex flex-col items-start gap-6 cursor-default backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.36)]"
+              className="bg-white rounded-[24px] p-10 flex flex-col items-start gap-6 cursor-default"
+              style={{ boxShadow: "0 8px 40px rgba(107,63,192,0.08)" }}
             >
-              <div className="ngo-icon text-[var(--color-rescue)]">{item.icon}</div>
+              <div className="ngo-icon text-[var(--color-signal)]">{item.icon}</div>
               <div>
-                <h3 className="font-sans font-bold text-[18px] text-white/90 mb-3">{item.title}</h3>
-                <p className="font-sans text-[14px] text-white/60 leading-relaxed">{item.desc}</p>
+                <h3 className="font-sans font-bold text-[18px] text-[var(--color-plum)] mb-3">{item.title}</h3>
+                <p className="font-sans text-[14px] text-[var(--color-plum)] opacity-60 leading-relaxed">{item.desc}</p>
               </div>
             </div>
           ))}

@@ -60,11 +60,11 @@ export default function HowItWorks() {
         });
       });
 
-      // Background color transition as section enters view
+      // Background color stays static as requested
       gsap.fromTo(sectionRef.current,
-        { backgroundColor: "#0B1121" }, // from Navy
+        { backgroundColor: "#FFF5F0" },
         {
-          backgroundColor: "#1C3264", // to Blue
+          backgroundColor: "#FFF5F0",
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -80,13 +80,13 @@ export default function HowItWorks() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="how-it-works" className="w-full py-28 md:py-40 px-6 overflow-hidden" style={{ backgroundColor: "#0B1121" }}>
+    <section ref={sectionRef} id="how-it-works" className="w-full py-28 md:py-40 px-6 overflow-hidden" style={{ backgroundColor: "#FFF5F0" }}>
       <div className="max-w-6xl mx-auto">
 
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-20 overflow-hidden">
-          <p className="font-sans text-[13px] font-semibold text-[var(--color-rescue)] tracking-[0.12em] uppercase mb-4">How It Works</p>
-          <h2 className="font-serif text-[42px] md:text-[52px] text-white/90 leading-tight">
+          <p className="font-sans text-[13px] font-semibold text-[var(--color-courage)] tracking-[0.12em] uppercase mb-4">How It Works</p>
+          <h2 className="font-serif text-[42px] md:text-[52px] text-[var(--color-plum)] leading-tight">
             Six steps. Zero<br />trace. Completely hers.
           </h2>
         </div>
@@ -97,23 +97,23 @@ export default function HowItWorks() {
             <div
               key={i}
               ref={(el) => { cardRefs.current[i] = el; }}
-              className="relative bg-white/5 border border-white/10 rounded-[24px] p-8 backdrop-blur-md cursor-default text-white"
+              className="relative bg-white rounded-[20px] p-8 cursor-default"
               style={{
-                boxShadow: "0 8px 32px 0 rgba(0,0,0,0.36)",
+                boxShadow: "0 4px 24px rgba(107,63,192,0.08)",
                 willChange: "transform",
                 transformStyle: "preserve-3d",
               }}
             >
               {/* Ghosted step number */}
-              <div className="absolute -top-2 -right-1 font-serif text-[88px] text-white/5 leading-none select-none">
+              <div className="absolute -top-2 -right-1 font-serif text-[72px] text-[#E8E4F5] leading-none select-none">
                 {String(i + 1).padStart(2, "0")}
               </div>
 
               <div className="relative z-10">
                 {/* Icon */}
                 <div className="text-[36px] mb-5 leading-none">{step.icon}</div>
-                <h3 className="font-serif text-[22px] text-white/90 mb-3 leading-snug">{step.title}</h3>
-                <p className="font-sans text-[14px] text-white/60 leading-[1.75]">{step.desc}</p>
+                <h3 className="font-serif text-[22px] text-[var(--color-plum)] mb-3 leading-snug">{step.title}</h3>
+                <p className="font-sans text-[14px] text-[var(--color-plum)]/60 leading-[1.75]">{step.desc}</p>
               </div>
 
               {/* Accent line at bottom */}

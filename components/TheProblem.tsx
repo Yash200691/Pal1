@@ -68,7 +68,7 @@ export default function TheProblem() {
     <section
       ref={sectionRef}
       id="the-problem"
-      className="relative w-full bg-gradient-to-br from-[var(--color-navy)] to-[var(--color-blue)] py-28 md:py-40 px-6 overflow-hidden"
+      className="relative w-full bg-[var(--color-plum)] py-28 md:py-40 px-6 overflow-hidden"
     >
       {/* Ambient floating dots */}
       {[
@@ -105,7 +105,7 @@ export default function TheProblem() {
         {/* RIGHT: Comparison Cards */}
         <div className="flex flex-col gap-6">
           {/* Card 1 */}
-          <div ref={card1Ref} className="bg-white/[0.05] border border-white/10 rounded-[24px] p-8 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover:bg-white/[0.08] transition-colors duration-300">
+          <div ref={card1Ref} className="bg-white/[0.06] rounded-[16px] p-8">
             <h3 className="font-sans font-bold text-white/90 text-[15px] mb-5 flex items-center gap-3">
               <span className="inline-flex w-7 h-7 rounded-full bg-[var(--color-courage)]/20 border border-[var(--color-courage)]/40 items-center justify-center">
                 <span className="text-[var(--color-courage)] text-[10px] font-bold">✕</span>
@@ -122,7 +122,7 @@ export default function TheProblem() {
           </div>
 
           {/* Card 2 */}
-          <div ref={card2Ref} className="bg-[var(--color-rescue)]/[0.08] border border-[var(--color-rescue)]/25 rounded-[24px] p-8 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] hover:bg-[var(--color-rescue)]/[0.14] transition-colors duration-300">
+          <div ref={card2Ref} className="bg-[var(--color-rescue)]/[0.08] border border-[var(--color-rescue)]/25 rounded-[16px] p-8">
             <h3 className="font-sans font-bold text-[var(--color-rescue)] text-[15px] mb-5 flex items-center gap-3">
               <span className="inline-flex w-7 h-7 rounded-full bg-[var(--color-rescue)]/20 border border-[var(--color-rescue)]/40 items-center justify-center">
                 <span className="text-[var(--color-rescue)] text-[10px] font-bold">✓</span>

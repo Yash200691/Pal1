@@ -1,4 +1,4 @@
-import HeroParallax from "@/components/HeroParallax";
+import CinematicScroll from "@/components/CinematicScroll";
 import TheProblem from "@/components/TheProblem";
 import HowItWorks from "@/components/HowItWorks";
 import Features from "@/components/Features";
@@ -8,8 +8,8 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen selection:bg-[var(--color-text)] selection:text-[var(--color-dawn)]">
-      <HeroParallax />
+    <main className="min-h-screen selection:bg-[var(--color-plum)] selection:text-[var(--color-dawn)]">
+      <CinematicScroll />
       <TheProblem />
       <HowItWorks />
       <Features />

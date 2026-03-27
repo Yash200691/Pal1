@@ -90,7 +90,7 @@ export default function Features() {
     <section
       ref={sectionRef}
       id="features"
-      className="relative w-full bg-[var(--color-navy)] py-28 md:py-40 px-6 overflow-hidden"
+      className="relative w-full bg-[#1A0A30] py-28 md:py-40 px-6 overflow-hidden"
     >
       {/* Ambient background orbs */}
       <div className="feat-orb absolute top-[10%] left-[5%] w-[320px] h-[320px] bg-[var(--color-signal)] rounded-full blur-[160px] opacity-[0.10] pointer-events-none" />
@@ -133,7 +133,7 @@ export default function Features() {
           {featuresData[tabs[activeTab]].map((feature, i) => (
             <div
               key={`${activeTab}-${i}`}
-              className="feat-card bg-white/[0.05] border border-white/[0.1] rounded-[24px] p-7 flex flex-col gap-4 backdrop-blur-md shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] hover:bg-white/[0.08] hover:border-white/20 transition-colors duration-300"
+              className="feat-card bg-white/[0.05] border border-white/[0.09] rounded-[20px] p-7 flex flex-col gap-4 hover:bg-white/[0.09] hover:border-white/20 transition-colors duration-300"
             >
               <div className="flex items-start justify-between gap-4">
                 <h4 className="font-sans font-bold text-[16px] text-white leading-snug">{feature.name}</h4>
